@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-import 'package:supabase_quickstart/main.dart';
+// import 'package:supabase_quickstart/main.dart'; // Removed as the file does not exist
 
 class Avatar extends StatefulWidget {
   const Avatar({
@@ -19,6 +19,8 @@ class Avatar extends StatefulWidget {
 
 class _AvatarState extends State<Avatar> {
   bool _isLoading = false;
+
+  final supabase = Supabase.instance.client;
 
   @override
   Widget build(BuildContext context) {
@@ -76,11 +78,17 @@ class _AvatarState extends State<Avatar> {
       widget.onUpload(imageUrlResponse);
     } on StorageException catch (error) {
       if (mounted) {
-        context.showSnackBar(error.message, isError: true);
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(error.message), backgroundColor: Colors.red),
+        );
       }
-    } catch (error) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Unexpected error occurred'), backgroundColor: Colors.red),
+        );
       if (mounted) {
-        context.showSnackBar('Unexpected error occurred', isError: true);
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Unexpected error occurred'), backgroundColor: Colors.red),
+        );
       }
     }
 

@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-import 'package:supabase_quickstart/components/avatar.dart'; // Ensure this file contains the Avatar widget or replace with the correct import
-import 'package:supabase_quickstart/main.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:authmate/components/avatar.dart'; // Replace with the correct path to the Avatar widget
+// import 'package:supabase_quickstart/main.dart'; // Removed as the file does not exist
+import 'package:authmate/pages/login_page.dart'; // Replace with the correct path to the LoginPage class
 
 final supabase = Supabase.instance.client;
-import 'package:supabase_quickstart/pages/login_page.dart'; // Ensure this file contains the LoginPage class or replace with the correct import
 
 class AccountPage extends StatefulWidget {
   const AccountPage({super.key});
@@ -89,10 +88,12 @@ class _AccountPageState extends State<AccountPage> {
     try {
       await supabase.auth.signOut();
     } on AuthException catch (error) {
-      if (mounted) context.showSnackBar(error.message, isError: true);
+      if (mounted) ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(error.message)));
     } catch (error) {
       if (mounted) {
-        context.showSnackBar('Unexpected error occurred', isError: true);
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Unexpected error occurred')),
+        );
       }
     } finally {
       if (mounted) {
@@ -117,10 +118,12 @@ class _AccountPageState extends State<AccountPage> {
         );
       }
     } on PostgrestException catch (error) {
-      if (mounted) context.showSnackBar(error.message, isError: true);
+      if (mounted) ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(error.message)));
     } catch (error) {
       if (mounted) {
-        context.showSnackBar('Unexpected error occurred', isError: true);
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Unexpected error occurred')),
+        );
       }
     }
     if (!mounted) {
